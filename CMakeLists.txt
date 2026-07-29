@@ -1,3 +1,5 @@
-cmake_minimum_required(VERSION 4.4.0)
+cmake_minimum_required(VERSION 3.10)
 project(ReadConfigFile)
-add_executable(ReadFile main.cpp)
+
+add_executable(ReadFile main.cpp src/ConfigFileManager.cpp)
+target_include_directories(ReadFile PRIVATE inc)

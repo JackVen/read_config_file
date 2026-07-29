@@ -1,9 +1,11 @@
 #include <iostream>
+#include "ConfigFileManager.hpp" 
 
 
 
 int main (){
-    std::cout<< "Hello World!" << std::endl;
+    ConfigFileManager cfgm;
+    std::cout<< cfgm.readFile("Hello") << std::endl;
 
     return 0;
 }
