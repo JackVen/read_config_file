@@ -7,9 +7,9 @@
 class ConfigFileManager
 {
 private:
-    std::string const pathToFile = "../tempSensor.json";
+    std::string const pathToFile = "../tempSenor.json";
 
 public:
     ConfigFileManager();
-    std::string readFile() const;
+    nlohmann::json readFile() const;
 };
