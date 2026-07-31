@@ -2,3 +2,6 @@
 /build
 # MacOs file
 .DS_Store
+
+#vscode
+.vscode

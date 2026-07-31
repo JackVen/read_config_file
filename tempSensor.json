@@ -1,0 +1,10 @@
+{
+    "sensor_model": "STM32F031K6T",
+    "operational_max_temp": "105",
+    "operational_min_temp": "-40",
+    "cal_ts1": "0x1FFFF7B8",
+    "cal_ts2": "0x1FFFF7C2",
+    "adc_resolution": "12",
+    "adc_data_aligment": "right",
+    "log_file": "/read_config_file/read_file.log"
+}

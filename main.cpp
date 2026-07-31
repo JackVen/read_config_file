@@ -5,7 +5,7 @@
 
 int main (){
     ConfigFileManager cfgm;
-    std::cout<< cfgm.readFile("Hello") << std::endl;
+    std::cout<< cfgm.readFile() << std::endl;
 
     return 0;
 }
