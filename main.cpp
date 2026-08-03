@@ -4,8 +4,8 @@
 int main()
 {
     ConfigFileManager cfgm;
-    nlohmann::json config = cfgm.readFile();
-    std::cout << config.dump(4) << std::endl;
-
+    nlohmann::json configFile = cfgm.readFile();
+    cfgm.validateFile(configFile);
+    cfgm.parseFile(configFile);
     return 0;
 }
