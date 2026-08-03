@@ -1,4 +1,6 @@
-#build files
+# Build files
 /build
 # MacOs file
 .DS_Store
+# Vscode generated files
+.vscode
