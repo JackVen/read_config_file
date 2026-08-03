@@ -1,9 +1,11 @@
 #include <iostream>
+#include "ConfigFileManager.hpp"
 
-
-
-int main (){
-    std::cout<< "Hello World!" << std::endl;
-
+int main()
+{
+    ConfigFileManager cfgm;
+    nlohmann::json configFile = cfgm.readFile();
+    cfgm.validateFile(configFile);
+    cfgm.parseFile(configFile);
     return 0;
 }
