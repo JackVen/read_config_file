@@ -9,6 +9,6 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(json)
 
-add_executable(ReadFile main.cpp src/ConfigFileManager.cpp)
+add_executable(ReadFile main.cpp src/ConfigFileManager.cpp src/Logger.cpp)
 target_include_directories(ReadFile PRIVATE inc)
 target_link_libraries(ReadFile PRIVATE nlohmann_json::nlohmann_json)

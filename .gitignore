@@ -4,3 +4,5 @@
 .DS_Store
 # Vscode generated files
 .vscode
+# logs
+logFile.log

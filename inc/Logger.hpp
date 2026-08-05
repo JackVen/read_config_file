@@ -1,11 +1,10 @@
+#pragma once
 #include <ctime>
 #include <fstream>
 #include <iostream>
 #include <sstream>
 
-using namespace std;
-
-enum LogLevel
+enum class LogLevel
 {
     DEBUG,
     INFO,
@@ -18,37 +17,33 @@ class Logger
 {
 
 private:
-    ofstream logFile;
-    string levelToString(LogLevel level)
+    std::ofstream logFile;
+    std::string_view levelToString(LogLevel level) const
     {
         switch (level)
         {
-        case DEBUG:
+        case LogLevel::DEBUG:
             return "DEBUG";
-        case INFO:
+        case LogLevel::INFO:
             return "INFO";
-        case WARNING:
+        case LogLevel::WARNING:
             return "WARNING";
-        case ERROR:
+        case LogLevel::ERROR:
             return "ERROR";
-        case CRITICAL:
+        case LogLevel::CRITICAL:
             return "CRITICAL";
         default:
             return "UNKNOWN";
         }
     }
+    std::string getCurrentTime();
+    void writeLogEntry(std::string_view logEntry);
 
 public:
-    // Constructor
-    Logger(const string &fileName)
-    {
-        logFile.open(fileName, ios::app);
-        if (!logFile.is_open())
-        {
-            cerr << "Log file couldn't open" << endl;
-        }
-    }
-    // Destructor
+    Logger(const std::string &fileName);
     ~Logger() { logFile.close(); }
-    void log(LogLevel level, const string &message);
+    // Singleton pattern
+    Logger(const Logger &) = delete;
+    Logger &operator=(const Logger &) = delete;
+    void log(LogLevel level, std::string_view message);
 };

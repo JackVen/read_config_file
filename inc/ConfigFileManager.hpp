@@ -15,7 +15,7 @@ static const std::vector<std::string> reqSensorParams = {"sensor_model",
 class ConfigFileManager
 {
 private:
-    std::string const pathToFile = "../tempSensor.json";
+    std::string const pathToFile = "tempSensor.json";
     static constexpr std::size_t configFileSize = 8;
 
 public:
