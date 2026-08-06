@@ -4,22 +4,61 @@
 Opens the log file at object construction
 Param: Log file name
 */
-Logger::Logger(const std::string &fileName)
+
+Logger::Logger()
 {
-    logFile.open(fileName, std::ios::app);
+    logFile.open("logFile.log", std::ios::app);
     if (!logFile.is_open())
     {
-        std::cerr << "Log file couldn't open" << std::endl;
+        std::cerr << "Log file couldn't open: logFile.log" << std::endl;
     }
 }
-/*Log function
-- Gets the current time
-- Creates a log entry
-- write the log entry to file
-*/
+
+Logger::~Logger()
+{
+    if (logFile.is_open())
+    {
+        logFile.close();
+    }
+}
+
+Logger &Logger::getInstance()
+{
+    static Logger instance;
+    return instance;
+}
+
 void Logger::log(LogLevel level, std::string_view message)
 {
+    getInstance().logImpl(level, message);
+}
 
+std::string_view Logger::levelToString(LogLevel level) const
+{
+    switch (level)
+    {
+    case LogLevel::DEBUG:
+        return "DEBUG";
+    case LogLevel::INFO:
+        return "INFO";
+    case LogLevel::WARNING:
+        return "WARNING";
+    case LogLevel::ERROR:
+        return "ERROR";
+    case LogLevel::CRITICAL:
+        return "CRITICAL";
+    default:
+        return "UNKNOWN";
+    }
+}
+
+/*Log function implementation
+- Gets the current time
+- Creates a log entry
+- Writes the log entry to console and file
+*/
+void Logger::logImpl(LogLevel level, std::string_view message)
+{
     std::ostringstream logEntry;
     logEntry << "[" << getCurrentTime()
              << "] "
@@ -48,15 +87,13 @@ std::string Logger::getCurrentTime()
 /*Writes log entry into the log file*/
 void Logger::writeLogEntry(std::string_view logEntry)
 {
-
     if (logFile.is_open())
     {
         logFile << logEntry;
-        logFile
-            .flush();
+        logFile.flush();
     }
     else
     {
-        std::cerr << "Couldn't write to log to file" << std::endl;
+        std::cerr << "Couldn't write log to file" << std::endl;
     }
 }

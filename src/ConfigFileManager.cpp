@@ -9,11 +9,13 @@ ConfigFileManager::ConfigFileManager() = default;
 */
 nlohmann::json ConfigFileManager::readFile() const
 {
+    Logger::log(LogLevel::INFO, "Reading configuration file");
+
     std::ifstream configFile(pathToFile);
     nlohmann::json configRoot;
     if (!configFile.is_open())
     {
-        std::cerr << "Error: Unable to open file at " << pathToFile << '\n';
+        Logger::log(LogLevel::ERROR, "Unable to open configuration file: " + pathToFile);
         return nlohmann::json{};
     }
     try
@@ -22,7 +24,7 @@ nlohmann::json ConfigFileManager::readFile() const
     }
     catch (const std::exception &e)
     {
-        std::cerr << e.what() << '\n';
+        Logger::log(LogLevel::ERROR, std::string("JSON parse error: ") + e.what());
     }
 
     return configRoot;
@@ -35,15 +37,17 @@ nlohmann::json ConfigFileManager::readFile() const
 */
 bool ConfigFileManager::validateFile(nlohmann::json &file) const
 {
+    Logger::log(LogLevel::INFO, "Validating configuration file");
+
     if (!file.is_object())
     {
-        std::cerr << "Validation Error: JSON is not a valid object.\n";
+        Logger::log(LogLevel::ERROR, "Validation Error: JSON is not a valid object.");
         return false;
     }
 
     if (file.size() > configFileSize)
     {
-        std::cerr << "File size not valid: " << file.size() << std::endl;
+        Logger::log(LogLevel::ERROR, "File size not valid: " + std::to_string(file.size()));
         return false;
     }
 
@@ -51,7 +55,7 @@ bool ConfigFileManager::validateFile(nlohmann::json &file) const
     {
         if (!file.contains(param))
         {
-            std::cout << "Required Key missing: " << param << std::endl;
+            Logger::log(LogLevel::ERROR, "Required Key missing: " + param);
             return false;
         }
     }
@@ -61,6 +65,7 @@ bool ConfigFileManager::validateFile(nlohmann::json &file) const
 
 void ConfigFileManager::parseFile(nlohmann::json &file) const
 {
+    Logger::log(LogLevel::INFO, "Parsing configuration file");
 
     try
     {
@@ -72,18 +77,9 @@ void ConfigFileManager::parseFile(nlohmann::json &file) const
         auto ts2CalibValue = std::stoi(file.at("cal_ts2").get<std::string>(), nullptr, 16);
         auto adcResolution = std::stoi(file.at("adc_resolution").get<std::string>());
         auto adcDataAlig = file.at("adc_data_aligment").get<std::string>();
-
-        // Print the parameters as primitive data types
-        std::cout << "sensorModel : " << sensorModel << std::endl;
-        std::cout << "opMaxTemp : " << opMaxTemp << std::endl;
-        std::cout << "opMinTemo : " << opMinTemo << std::endl;
-        std::cout << "ts1CalibValue : " << ts1CalibValue << std::endl;
-        std::cout << "ts2CalibValue : " << ts2CalibValue << std::endl;
-        std::cout << "adcResolution : " << adcResolution << std::endl;
-        std::cout << "adcDataAlig : " << adcDataAlig << std::endl;
     }
     catch (const std::exception &e)
     {
-        std::cerr << "Error when parsing config file: " << e.what() << std::endl;
+        Logger::log(LogLevel::ERROR, std::string("Error when parsing config file: ") + e.what());
     }
 }

@@ -3,6 +3,8 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
+#include <string>
+#include <string_view>
 
 enum class LogLevel
 {
@@ -15,35 +17,23 @@ enum class LogLevel
 
 class Logger
 {
-
 private:
     std::ofstream logFile;
-    std::string_view levelToString(LogLevel level) const
-    {
-        switch (level)
-        {
-        case LogLevel::DEBUG:
-            return "DEBUG";
-        case LogLevel::INFO:
-            return "INFO";
-        case LogLevel::WARNING:
-            return "WARNING";
-        case LogLevel::ERROR:
-            return "ERROR";
-        case LogLevel::CRITICAL:
-            return "CRITICAL";
-        default:
-            return "UNKNOWN";
-        }
-    }
+
+    Logger();
+    ~Logger();
+
+    std::string_view levelToString(LogLevel level) const;
     std::string getCurrentTime();
     void writeLogEntry(std::string_view logEntry);
+    void logImpl(LogLevel level, std::string_view message);
 
 public:
-    Logger(const std::string &fileName);
-    ~Logger() { logFile.close(); }
-    // Singleton pattern
     Logger(const Logger &) = delete;
     Logger &operator=(const Logger &) = delete;
-    void log(LogLevel level, std::string_view message);
+    Logger(Logger &&) = delete;
+    Logger &operator=(Logger &&) = delete;
+
+    static Logger &getInstance();
+    static void log(LogLevel level, std::string_view message);
 };

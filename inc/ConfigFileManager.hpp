@@ -3,6 +3,7 @@
 #include <fstream>
 #include <iostream>
 #include <nlohmann/json.hpp>
+#include <Logger.hpp>
 
 static const std::vector<std::string> reqSensorParams = {"sensor_model",
                                                          "operational_max_temp",
